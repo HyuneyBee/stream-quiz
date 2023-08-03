@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Quiz1 {
+    private static final String TARGET = "좋아";
+    private static final int LENGTH = 2;
 
     // 1.1 각 취미를 선호하는 인원이 몇 명인지 계산하여라.
     public Map<String, Integer> quiz1() throws IOException {
@@ -34,6 +36,16 @@ public class Quiz1 {
     // 1.3 소개 내용에 '좋아'가 몇번 등장하는지 계산하여라.
     public int quiz3() throws IOException {
         List<String[]> csvLines = readCsvLines();
+        return csvLines.stream()
+                .map(line -> countString(line[2], 0))
+                .reduce(0, Integer::sum);
+    }
+
+    private int countString(String line, int formIndex){
+        int next = line.indexOf(TARGET, formIndex);
+        if(next > 1){
+            return 1 + countString(line, next + LENGTH);
+        }
         return 0;
     }
 
